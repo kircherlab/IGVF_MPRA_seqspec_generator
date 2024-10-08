@@ -1,0 +1,169 @@
+!Assay
+seqspec_version: 0.3.0
+assay_id: MPRA
+name: mpra_unc_hepg2
+doi: ''
+date: 08 October 2024
+description: MPRA integrating a reporter library targeting phenotype-associated variants genome-wide
+modalities:
+  - rna
+lib_struct: ''
+sequence_protocol: Illumina NovaSeq 6000 (EFO:0008637)
+sequence_kit: NovaSeq 6000 S1 Reagent Kit v1.5
+library_protocol: massively parallel reporter assay (OBI:0002675)
+library_kit: Custom
+sequence_spec:
+- !Read
+  read_id: RNA BC count fw
+  name: Forward RNA BC read
+  modality: rna
+  primer_id: R1_custom_primer
+  min_len: 51
+  max_len: 51
+  strand: pos
+  files:
+  - !File
+    file_id: IGVFFI1586GLDT
+    filename: IGVFFI1586GLDT.fastq.gz
+    md5: c09f3709d6d7cd79372b1d4a3bec6e19
+    filetype: fastq
+    filesize: 1402815060
+    url: https://api.data.igvf.org/sequence-files/IGVFFI1586GLDT/@@download/IGVFFI1586GLDT.fastq.gz
+    urltype: https
+  - !File
+    file_id: IGVFFI1618FFIN
+    filename: IGVFFI1618FFIN.fastq.gz
+    md5: 6ebe22224bb82a547058ee17badf56cc
+    filetype: fastq
+    filesize: 1368588885
+    url: https://api.data.igvf.org/sequence-files/IGVFFI1618FFIN/@@download/IGVFFI1618FFIN.fastq.gz
+    urltype: https
+library_spec:
+- !Region
+  parent_id: null
+  region_id: rna
+  region_type: rna
+  name: rna
+  sequence_type: joined
+  sequence: AATGATACGGCGACCACCGAGATCTACACTACAACCGCCAAGAAGCTGCGCGGTGGTGTTGTGTTCGTGGACGAGGTGCCTAAAGGACTGACCGGCAAGTTGGACGCCCGCAAGATCCGCGAGATTCTCATTAAGGCCAAGAAGGGCGGCAAGATCGCCGTGTAATAATTCTAGANNNNNNNNNNNNNNNNNNNNACTAGTACACTCCCCGTCGGCAGTTGGGAAGAGCATAGTCGTAGAGCACGCGGACTCCTATCTCGTATGCCGTCTTCTGGTTG
+  min_len: 278
+  max_len: 278
+  onlist: null
+  regions:
+  - !Region
+    parent_id: rna
+    region_id: P5
+    region_type: illumina_p5
+    name: P5
+    sequence_type: fixed
+    sequence: AATGATACGGCGACCACCGAGATCTACAC
+    min_len: 29
+    max_len: 29
+    onlist: null
+    regions: null
+  - !Region
+    parent_id: rna
+    region_id: PCR1_2_primer
+    region_type: custom_primer
+    name: PCR1_2_primer
+    sequence_type: fixed
+    sequence: TACAACCGCCAAGAAGCTGC
+    min_len: 20
+    max_len: 20
+    onlist: null
+    regions: null
+  - !Region
+    parent_id: rna
+    region_id: Luciferase
+    region_type: protein
+    name: Luciferase
+    sequence_type: fixed
+    sequence: GCGGTGGTGTTGTGTTCGTGGACGAGGTGCCTAAAGGACTGACCGGCAAGTTGGACGCCCGCAAGATCCGCGAGATTCTCATTAAGG
+    min_len: 87
+    max_len: 87
+    onlist: null
+    regions: null
+  - !Region
+    parent_id: rna
+    region_id: R1_custom_primer
+    region_type: custom_primer
+    name: R1_custom_primer
+    sequence_type: fixed
+    sequence: CCAAGAAGGGCGGCAAGATCGCCGTGTAATAATTCTAGA
+    min_len: 39 
+    max_len: 39
+    onlist: null
+    regions: null
+  - !Region
+    parent_id: rna
+    region_id: Barcode
+    region_type: barcode
+    name: Barcode
+    sequence_type: onlist
+    sequence: NNNNNNNNNNNNNNNNNNNN
+    min_len: 20
+    max_len: 20
+    onlist: !Onlist
+      file_id: IGVFFI9520JZQK
+      filename: IGVFFI9520JZQK.tsv.gz
+      md5: 1c2b05d3be77e70edc9386b558ca3e03
+      filetype: tsv
+      filesize: 408467821
+      url: https://api.data.igvf.org/tabular-files/IGVFFI9520JZQK/@@download/IGVFFI9520JZQK.tsv.gz
+      urltype: https
+    regions: null
+  - !Region
+    parent_id: rna
+    region_id: RT_primer
+    region_type: custom_primer
+    name: RT_primer
+    sequence_type: fixed
+    sequence: ACTAGTACACTCCCCGTCG
+    min_len: 19
+    max_len: 19
+    onlist: null
+    regions: null
+  - !Region
+    parent_id: rna
+    region_id: PCR1_primer
+    region_type: custom_primer
+    name: PCR1_primer
+    sequence_type: fixed
+    sequence: GCAGTTGGGAAGAGCAT
+    min_len: 17
+    max_len: 17
+    onlist: null
+    regions: null
+  - !Region
+    parent_id: rna
+    region_id: PCR2_primer
+    region_type: custom_primer
+    name: PCR2_primer
+    sequence_type: fixed
+    sequence: AGTCGTAGAGCACGC
+    min_len: 15
+    max_len: 15
+    onlist: null
+    regions: null
+  - !Region
+    parent_id: rna
+    region_id: i7_index
+    region_type: index7
+    name: i7_index
+    sequence_type: fixed
+    sequence: GGACTCCT
+    min_len: 8
+    max_len: 8
+    onlist: null
+    regions: null
+  - !Region
+    parent_id: rna
+    region_id: P7
+    region_type: illumina_p7
+    name: P7
+    sequence_type: fixed
+    sequence: ATCTCGTATGCCGTCTTCTGGTTG
+    min_len: 24
+    max_len: 24
+    onlist: null
+    regions: null
