@@ -189,8 +189,9 @@ def cli(
     template_vars["bc_length"] = bc_length
 
     reads = getReads(r2_ids)
+    print(r2_ids)
     template_vars["r2_reads"] = reads
-    if oligo_length is None and r2_ids is not None:
+    if oligo_length is None and r2_ids:
         oligo_length = reads[0]["mean_read_length"]
     template_vars["oligo_length"] = oligo_length
 
