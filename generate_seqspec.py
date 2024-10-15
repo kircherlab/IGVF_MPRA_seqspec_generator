@@ -31,7 +31,8 @@ import os
 @click.option(
     "--modality",
     "modality",
-    required=True,
+    required=False,
+    default="dna",
     type=click.Choice(["dna", "rna"]),
     help="Modality of the data",
 )
@@ -45,7 +46,7 @@ import os
 @click.option(
     "--bc-length",
     "bc_length",
-    required=False,
+    required=True,
     type=int,
     help="Barcode length, if not set mean read length of R1 read is used",
 )
@@ -91,7 +92,7 @@ import os
     "--r1-primer",
     "r1_primer",
     required=False,
-    default="GCTCCTCGCCCTTGCTCACCATGGTGGCGACCGGT",
+    default="GCAAAGTGAACACATCGCTAAGCGAAAGCTAAG", # "GCTCCTCGCCCTTGCTCACCATGGTGGCGACCGGT",
     type=str,
     help="R1 primer sequence",
 )
@@ -99,7 +100,7 @@ import os
     "--r2-primer",
     "r2_primer",
     required=False,
-    default="CTTAGCTTTCGCTTAGCGATGTGTTCACTTTGC",
+    default="ACCGGTCGCCACCATGGTGAGCAAGGGCGAGGAGC",
     type=str,
     help="R2 primer sequence",
 )
@@ -107,7 +108,7 @@ import os
     "--r3-primer",
     "r3_primer",
     required=False,
-    default="ACCGGTCGCCACCATGGTGAGCAAGGGCGAGGAGC",
+    default="CTTAGCTTTCGCTTAGCGATGTGTTCACTTTGC",
     type=str,
     help="R3 primer sequence",
 )
@@ -184,12 +185,9 @@ def cli(
 
     platform_terms = conn.get(reads[0]["sequencing_platform"]["@id"])
     template_vars["platform_terms"] = platform_terms
-    if bc_length is None:
-        bc_length = reads[0]["mean_read_length"]
     template_vars["bc_length"] = bc_length
 
     reads = getReads(r2_ids)
-    print(r2_ids)
     template_vars["r2_reads"] = reads
     if oligo_length is None and r2_ids:
         oligo_length = reads[0]["mean_read_length"]

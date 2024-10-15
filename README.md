@@ -35,12 +35,48 @@ python generate_seqspec.py --help
 
 ### Shendure grant
 
+#### Assignment data
+
+DNA assignment seqspec of lenti virus MPRA from Shendure (UW) grant:
+
+```bash
+python generate_seqspec.py --template templates/igvf_mpra_lenti_assignment.v0.3.0.yml \
+--name mpra_shendure_80K --modality dna \
+--r1-id IGVFFI9931MZQI --r2-id IGVFFI9154RAYY --r3-id IGVFFI7509PYSL \
+--r1-primer GGCCCGCTCTAGACCTGCAGGAGGACCGGATCAACT --r2-primer GCAAAGTGAACACATCGCTAAGCGAAAGCTAAG --r3-primer CATTGCGTGAACCGACACTAGAGGGTATATAATG \
+--bc-length 15 --oligo-length 270 \
+--output test.yaml
+```
+
+
+```bash	
+seqspec print -f seqspec-ascii test.yaml
+```
+
+returns:
+
+```text
+dna
+---
+                                                                                             |------------------------------------------------------------------------------------------------------------------------------------------------->(1) Oligo fwd
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |-------------->(3) BC
+AATGATACGGCGACCACCGAGATCTACACXXXXXXXXXXCAGCCTGCATTTCTGCCAGGGCCCGCTCTAGACCTGCAGGAGGACCGGATCAACTNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNGCAAAGTGAACACATCGCTAAGCGAAAGCTAAGGAAGCTCGACTTCCAGCTTGGCAATCCGGTACTGTCATTGCGTGAACCGACACTAGAGGGTATATAATGXXXXXXXXXXXXXXXACCGGTCGCCACCATGGTGAGCAAGGGCGAGGAGCATCTCGTATGCCGTCTTCTGCTTG
+TTACTATGCCGCTGGTGGCTCTAGATGTGXXXXXXXXXXGTCGGACGTAAAGACGGTCCCGGGCGAGATCTGGACGTCCTCCTGGCCTAGTTGANNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNCGTTTCACTTGTGTAGCGATTCGCTTTCGATTCCTTCGAGCTGAAGGTCGAACCGTTAGGCCATGACAGTAACGCACTTGGCTGTGATCTCCCATATATTACXXXXXXXXXXXXXXXTGGCCAGCGGTGGTACCACTCGTTCCCGCTCCTCGTAGAGCATACGGCAGAAGACGAAC
+                                                                                                                                                                                                                          <-------------------------------------------------------------------------------------------------------------------------------------------------|(2) Oligo rev
+```
+
+#### Count data
+
 RNA count seqspec of lenti virus MPRA from shendure (UW) grant:
 
 ```bash
 python generate_seqspec.py --template templates/igvf_mpra_lenti_counts.v0.3.0.yml \
---name mpra_shendure_asd --modality rna --doi 10.3390/ijms24043509 \
---r1-id IGVFFI2104GOOJ --r2-id IGVFFI5314QYSA --r3-id IGVFFI1100CEBW \
+--name mpra_shendure_80K --modality rna \
+--r1-id IGVFFI8223UESF --r1-id IGVFFI9990NOMV --r1-id IGVFFI3050NXPU \
+--r2-id IGVFFI9560VIAN --r2-id IGVFFI5074MDCR --r2-id IGVFFI4713QQLG \
+--r3-id IGVFFI1814DAMK --r3-id IGVFFI0172AZKE --r3-id IGVFFI2509VPWV \
+--r1-primer GCAAAGTGAACACATCGCTAAGCGAAAGCTAAG --r2-primer ACCGGTCGCCACCATGGTGAGCAAGGGCGAGGAGC \
+--bc-length 15 \
 --output test.yaml
 ```
 
@@ -53,16 +89,16 @@ returns:
 ```text
 rna
 ---
-                                  |-------------->(1) RNA BC count fw
-                                                                                                                     |--------->(3) RNA BC count id
-GCTCCTCGCCCTTGCTCACCATGGTGGCGACCGGTNNNNNNNNNNNNNNNCTTAGCTTTCGCTTAGCGATGTGTTCACTTTGCACCGGTCGCCACCATGGTGAGCAAGGGCGAGGAGCXXXXXXXXXX
-CGAGGAGCGGGAACGAGTGGTACCACCGCTGGCCANNNNNNNNNNNNNNNGAATCGAAAGCGAATCGCTACACAAGTGAAACGTGGCCAGCGGTGGTACCACTCGTTCCCGCTCCTCGXXXXXXXXXX
-                                   <--------------|(2) RNA BC count rv
+                                                                       |-------------->(1) RNA BC count fwd
+                                                                                                                         |--------------->(3) RNA BC count id
+AATGATACGGCGACCACCGAGATCTACACXXXXXXXXXXGCAAAGTGAACACATCGCTAAGCGAAAGCTAAGNNNNNNNNNNNNNNNACCGGTCGCCACCATGGTGAGCAAGGGCGAGGAGCXXXXXXXXXXXXXXXXATCTCGTATGCCGTCTTCTGCTTG
+TTACTATGCCGCTGGTGGCTCTAGATGTGXXXXXXXXXXCGTTTCACTTGTGTAGCGATTCGCTTTCGATTCNNNNNNNNNNNNNNNTGGCCAGCGGTGGTACCACTCGTTCCCGCTCCTCGXXXXXXXXXXXXXXXXTAGAGCATACGGCAGAAGACGAAC
+                                                                        <--------------|(2) RNA BC count rev
 ```
 
-### Mohkle grant
+### Mohlke grant
 
-RNA count seqspec of plasmid MPRA from mohlke (UNC) grant:
+RNA count seqspec of plasmid MPRA from Mohlke (UNC) grant:
 
 ```bash
 python generate_seqspec.py --template templates/igvf_mpra_unc_counts.v0.3.0.yml \

@@ -1,13 +1,13 @@
 ---
 !Assay
 seqspec_version: 0.3.0
-assay_id: {{ r1_reads[0].assay_titles|first }}
+assay_id: lentiMPRA
 name: {{ name }}
 doi: {{ doi|default("''", true) }}
 date: {{ date.strftime('%d %B %Y') }}
 description: {{ r1_reads[0].file_set.summary }}
 modalities:
-  - {{ modality }}
+  - dna
 lib_struct: ""
 library_protocol: massively parallel reporter assay (OBI:0002675)
 library_kit: Custom
@@ -15,9 +15,9 @@ sequence_protocol: {{ r1_reads[0].sequencing_platform.term_name }} ({{ platform_
 sequence_kit: {{ r1_reads[0].sequencing_kit }}
 sequence_spec:
 - !Read
-  read_id: {{ modality|upper }} BC count fw
-  name: Forward {{ modality|upper }} BC read
-  modality: {{ modality }}
+  read_id: Oligo fwd
+  name: Forward oligo read
+  modality: dna
   primer_id: R1_custom_primer
   min_len: {{ r1_reads[0].minimum_read_length }}
   max_len: {{ r1_reads[0].maximum_read_length }}
@@ -32,14 +32,14 @@ sequence_spec:
     url: https://api.data.igvf.org/sequence-files/{{ run.accession }}/@@download/{{ run.accession }}.fastq.gz
     urltype: https{% endfor %}
 - !Read
-  read_id: {{ modality|upper }} BC count rv
-  name: Reverse {{ modality|upper }} BC read
-  modality: {{ modality }}
-  primer_id: R2_custom_primer
-  min_len: {{ r2_reads[0].minimum_read_length }}
-  max_len: {{ r2_reads[0].maximum_read_length }}
+  read_id: Oligo rev
+  name: Reverse oligo read
+  modality: dna
+  primer_id: R3_custom_primer
+  min_len: {{ r3_reads[0].minimum_read_length }}
+  max_len: {{ r3_reads[0].maximum_read_length }}
   strand: neg
-  files:{% for run in r2_reads %}
+  files:{% for run in r3_reads %}
   - !File
     file_id: {{ run.accession }}
     filename: {{ run.accession }}.fastq.gz
@@ -49,14 +49,14 @@ sequence_spec:
     url: https://api.data.igvf.org/sequence-files/{{ run.accession }}/@@download/{{ run.accession }}.fastq.gz
     urltype: https{% endfor %}
 - !Read
-  read_id: {{ modality|upper }} BC count id
-  name: {{ modality|upper }} BC UMI read
-  modality: {{ modality }}
-  primer_id: R3_custom_primer
-  min_len: {{ r3_reads[0].minimum_read_length }}
-  max_len: {{ r3_reads[0].maximum_read_length }}
+  read_id: BC
+  name: Barcode read
+  modality: dna
+  primer_id: R2_custom_primer
+  min_len: {{ r2_reads[0].minimum_read_length }}
+  max_len: {{ r2_reads[0].maximum_read_length }}
   strand: pos
-  files:{% for run in r3_reads %}
+  files:{% for run in r2_reads %}
   - !File
     file_id: {{ run.accession }}
     filename: {{ run.accession }}.fastq.gz
@@ -68,17 +68,17 @@ sequence_spec:
 library_spec:
   - !Region
     parent_id: null
-    region_id: {{ modality }}
-    region_type: {{ modality }}
+    region_id: dna
+    region_type: dna
     name: primer, barcode and umi
     sequence_type: joined
     sequence: AATGATACGGCGACCACCGAGATCTACACXXXXXXXXXXCAGCCTGCATTTCTGCCAG{{ r1_primer }}{% for N in range(oligo_length) %}{{ "N" }}{% endfor %}{{ r2_primer }}GAAGCTCGACTTCCAGCTTGGCAATCCGGTACTGT{{ r3_primer }}{% for X in range(bc_length) %}{{ "X" }}{% endfor %}ACCGGTCGCCACCATGGTGAGCAAGGGCGAGGAGCATCTCGTATGCCGTCTTCTGCTTG
     min_len: {{ 29 + 10 + 19 + r1_primer|length + oligo_length + r2_primer|length + 35 + r3_primer|length + bc_length + 35 + 24 }}
-    max_len: 
+    max_len: {{ 29 + 10 + 19 + r1_primer|length + oligo_length + r2_primer|length + 35 + r3_primer|length + bc_length + 35 + 24 }}
     onlist: null
     regions:
       - !Region
-        parent_id: {{ modality }}
+        parent_id: dna
         region_id: P5
         region_type: illumina_p5
         name: P5
@@ -89,9 +89,9 @@ library_spec:
         onlist: null
         regions: null
       - !Region
-        parent_id: {{ modality }}
+        parent_id: dna
         region_id: i5_index
-        region_type: sample_index
+        region_type: index5
         name: i5_index
         sequence_type: random
         sequence: XXXXXXXXXX
@@ -100,10 +100,10 @@ library_spec:
         onlist: null
         regions: null
       - !Region
-        parent_id: {{ modality }}
-        region_id: unkown_1
-        region_type: unkown_sequence
-        name: unkown_1
+        parent_id: dna
+        region_id: unknown_sequence_1
+        region_type: linker
+        name: unknown_sequence_1
         sequence_type: fixed
         sequence: CAGCCTGCATTTCTGCCAG
         min_len: 19
@@ -111,7 +111,7 @@ library_spec:
         onlist: null
         regions: null
       - !Region
-        parent_id: {{ modality }}
+        parent_id: dna
         region_id: R1_custom_primer
         region_type: custom_primer
         name: R1_custom_primer
@@ -122,40 +122,25 @@ library_spec:
         onlist: null
         regions: null
       - !Region
-        parent_id: {{ modality }}
+        parent_id: dna
         region_id: oligo
-        region_type: oligo
+        region_type: dna
         name: oligo
         sequence_type: onlist
         sequence: {% for N in range(oligo_length) %}{{ "N" }}{% endfor %}
         min_len: {{ oligo_length }}
         max_len: {{ oligo_length }}
-        onlist: null
+        onlist: {% if onlist is defined %}!Onlist
+          file_id: {{ onlist.accession }}
+          filename: {{ onlist.accession }}.tsv.gz
+          md5: {{ onlist.md5sum }}
+          filetype: {{ onlist.file_format }}
+          filesize: {{ onlist.file_size }}
+          url: https://api.data.igvf.org/tabular-files/{{ onlist.accession }}/@@download/{{ onlist.accession }}.tsv.gz
+          urltype: https{% else %}null{% endif %}
         regions: null
       - !Region
-        parent_id: {{ modality }}
-        region_id: R2_custom_primer
-        region_type: custom_primer
-        name: R2_custom_primer
-        sequence_type: fixed
-        sequence: {{ r2_primer }}
-        min_len: {{ r2_primer|length }}
-        max_len: {{ r2_primer|length }}
-        onlist: null
-        regions: null
-      - !Region
-        parent_id: {{ modality }}
-        region_id: unknown_sequence_2
-        region_type: unknown_sequence
-        name: unknown_sequence_2
-        sequence_type: fixed
-        sequence: GAAGCTCGACTTCCAGCTTGGCAATCCGGTACTGT
-        min_len: 35
-        max_len: 35
-        onlist: null
-        regions: null
-      - !Region
-        parent_id: {{ modality }}
+        parent_id: dna
         region_id: R3_custom_primer
         region_type: custom_primer
         name: R3_custom_primer
@@ -166,7 +151,29 @@ library_spec:
         onlist: null
         regions: null
       - !Region
-        parent_id: {{ modality }}
+        parent_id: dna
+        region_id: unknown_sequence_2
+        region_type: linker
+        name: unknown_sequence_2
+        sequence_type: fixed
+        sequence: GAAGCTCGACTTCCAGCTTGGCAATCCGGTACTGT
+        min_len: 35
+        max_len: 35
+        onlist: null
+        regions: null
+      - !Region
+        parent_id: dna
+        region_id: R2_custom_primer
+        region_type: custom_primer
+        name: R2_custom_primer
+        sequence_type: fixed
+        sequence: {{ r2_primer }}
+        min_len: {{ r2_primer|length }}
+        max_len: {{ r2_primer|length }}
+        onlist: null
+        regions: null
+      - !Region
+        parent_id: dna
         region_id: barcode
         region_type: barcode
         name: barcode
@@ -177,9 +184,9 @@ library_spec:
         onlist: null
         regions: null
       - !Region
-        parent_id: {{ modality }}
+        parent_id: dna
         region_id: unknown_sequence_3
-        region_type: unknown_sequence
+        region_type: linker
         name: unknown_sequence_3
         sequence_type: fixed
         sequence: ACCGGTCGCCACCATGGTGAGCAAGGGCGAGGAGC
@@ -188,7 +195,7 @@ library_spec:
         onlist: null
         regions: null
       - !Region
-        parent_id: {{ modality }}
+        parent_id: dna
         region_id: P7
         region_type: illumina_p7
         name: P7
@@ -198,6 +205,3 @@ library_spec:
         max_len: 24
         onlist: null
         regions: null
-
-
-
